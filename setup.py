@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-PACKAGE_NAME = "package"
+PACKAGE_NAME = "rexearch"
 
 
 def get_version():

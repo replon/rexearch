@@ -1,4 +1,4 @@
-name: python-template
+name: rexearch
 
 on: [push]
 

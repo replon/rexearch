@@ -1,7 +1,7 @@
 .PHONY: style quality test test-cov
 
-check_dirs := package/ tests/
-test_dirs := package/
+check_dirs := rexearch/ tests/
+test_dirs := rexearch/
 
 style:
 	black $(check_dirs)

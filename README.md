@@ -18,17 +18,17 @@ JSON Example
 ```
 Rexearch reads a JSON rule list from your own file. a `rule` may contain following key-values
 
-- *regex* (str) - Whole Regular Expression that you want to search. *Mandatory*.
-- *target_regex_group* (int) - The target group number that you want to extract as `raw`. You may want to extract just some part of whole expression.
-- *categories* (list of str) - This will put some additional tags on the rule.
-- *id* (str) - Set `rule_id` if it needed
-- *repr* (str or f-string) - Representative word of this word. You can also write f-string using `{}` and `group(int)` in it. For example, "{group(2)} Month" will generate proper representation based on the `Match.group` object. 
+- **regex** (str) - Whole Regular Expression that you want to search. **Mandatory**.
+- **target_regex_group** (int) - The target group number that you want to extract as `raw`. You may want to extract just some part of whole expression.
+- **categories** (list of str) - This will put some additional tags on the rule.
+- **id** (str) - Set `rule_id` if it needed
+- **repr** (str or f-string) - Representative word of this word. You can also write f-string using `{}` and `group(int)` in it. For example, "{group(2)} Month" will generate proper representation based on the `Match.group` object. 
 
 ### Search Them All
 ```python
 import rexearch
 
-rx = rexearch.Rexearch(rexearch.SEARCH_MODE.SEPARATED)
+rx = rexearch.Rexearch()
 rx.load_json("sample.rexearch.json")
 sample_input = open("sample_input.txt", mode="rt").read()
 results = rx.search(sample_input)

@@ -1,0 +1,24 @@
+Bob Dylan (born Robert Allen Zimmerman, May 24, 1941) is an American singer-songwriter, author and visual artist.
+Widely regarded as one of the greatest songwriters of all time, Dylan has been a major figure in popular culture for more than 50 years.
+Much of his most celebrated work dates from the 1960s, when songs such as "Blowin' in the Wind" (1963) and "The Times They Are a-Changin'" (1964) became anthems for the civil rights and anti-war movements.
+His lyrics during this period incorporated a range of political, social, philosophical, and literary influences, defied pop music conventions and appealed to the burgeoning counterculture.
+Dylan made two important career moves in August 1962: he legally changed his name to Bob Dylan, and signed a management contract with Albert Grossman.
+In June 1961, Dylan had signed an agreement with Roy Silver. In 1962, Grossman paid Silver 10,000 Dollars to become sole manager.
+
+Name : John Smith
+Age : 54
+ID : johnsmith
+Job : Project Manager
+Rate : Good
+
+Name : Dongwook Lee
+Age : 33
+ID : replon
+Job : Software Engineer
+Rate : Great
+
+Name : Sarah Connor
+Age : 58
+ID : Terminator63
+Job : AI Engineer
+Rate : Bad

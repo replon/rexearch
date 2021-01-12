@@ -1,0 +1,30 @@
+[
+
+	{
+		"regex" : "(Bob )?Dylan",
+		"repr": "Bob Dylan"
+	},
+
+	{
+		"id": "sample.rule.001",
+		"regex" : "(N|n)ame ?: ?([a-zA-Z ]+)",
+		"target_regex_group" : 2,
+		"categories": ["PERSON_NAME"]
+	},
+
+	{
+		"id": "sample.rule.002",
+		"regex" : "(R|r)ate ?: ?(((V|v)ery )?(G|g)((ood)|(reat)))",
+		"target_regex_group" : 2,
+		"repr": "Positive",
+		"categories": ["RATE", "EMOTION"]
+	},
+
+	{
+		"id": "sample.rule.003",
+		"regex" : "(\\d{1,3}(?:[.,]\\d{3})*) ?(D|d)ollars?",
+		"target_regex_group" : 0,
+		"repr": "${group(1).replace(',','')}",
+		"categories": ["PRICE"]
+	}
+]

@@ -29,7 +29,7 @@ Rexearch reads a JSON rule list from your own file. a `rule` may contain followi
 import rexearch
 
 rx = rexearch.Rexearch()
-rx.load_json("sample.rexearch.json")
+rx.load_json_file("sample.rexearch.json")
 sample_input = open("sample_input.txt", mode="rt").read()
 results = rx.search(sample_input)
 
@@ -55,6 +55,7 @@ for result in results:
 ### Version 0.1
 
 - (0.1.0) First runnable. Only supports `SEARCH_MODE.SEPARATE` mode.
+- (0.1.1) Rename function `load_json` to `load_json_file`, Added basic tests
 
 ## Future works
 

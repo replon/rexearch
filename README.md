@@ -16,7 +16,7 @@ JSON Example
 {"id": "001", "regex": "(N|n)ame ?: ?([a-zA-Z ]+)", "target_regex_group": 2, "categories": ["PERSON_NAME"]}
 ]
 ```
-Rexearch reads a JSON rule list from your own file. a `rule` may contain following key-values
+**Rexearch** reads a JSON rule list from your own file. a `rule` may contain following key-values
 
 - **regex** (str) - Whole Regular Expression that you want to search. **Mandatory**.
 - **target_regex_group** (int) - The target group number that you want to extract as `raw`. You may want to extract just some part of whole expression.
@@ -50,14 +50,24 @@ for result in results:
 {'raw': '10,000 Dollars', 'start': 888, 'end': 902, 'repr': '$10000', 'rule_id': 'sample.rule.003', 'categories': ['PRICE']}
 ```
 
+### Search Mode
+```python
+from rexearch import Rexearch, SEARCH_MODE
+
+rx = Rexearch(mode=SEARCH_MODE.SEPARATED)
+```
+
+- `SEARCH_MODE.SEPARATED` : Default mode. Search one by one.
+- `SEARCH_MODE.UNIFIED` : This mode internally merge the regular expressions with '|' and run a single search. The result should be the same with the default.
+
 ## Updates
 
 ### Version 0.1
 
 - (0.1.0) First runnable. Only supports `SEARCH_MODE.SEPARATE` mode.
 - (0.1.1) Rename function `load_json` to `load_json_file`, Added basic tests
+- (0.1.2) Feat: support `SEARCH_MODE.UNIFIED`
 
 ## Future works
 
-- Unified Regex search
 - Multi-thread search

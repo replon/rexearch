@@ -34,7 +34,8 @@ setup(
     description="package description",
     python_requires=">=3.6.0",
     install_requires=get_require_packages(),
-    url="https://github.com/KB-Bank-AI/python-template",
-    author_email="ai.kbg@kbfg.com",
+    url="https://github.com/replon/rexearch",
+    author="Dylan Lee",
+    author_email="replon87@gmail.com",
     packages=find_packages(exclude=["tests"]),
 )

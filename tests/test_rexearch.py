@@ -1,6 +1,6 @@
 import json
 
-from rexearch import Rexearch
+from rexearch import SEARCH_MODE, Rexearch
 
 
 def test_list_load():
@@ -50,3 +50,38 @@ def test_extract_target_raw():
 
     names = set([item["raw"] for item in name_results])
     assert names == {"Dongwook Lee", "Jason"}
+
+
+def test_unified_search():
+    rxch = Rexearch(mode=SEARCH_MODE.UNIFIED)
+    rxch.load_json_file("tests/sample.rules.json")
+    assert len(rxch.rules) > 0
+    results = rxch.search(
+        "In June 1961, Dylan had signed an agreement with Roy Silver. In 1962, Grossman paid Silver 10,000 Dollars to "
+        "become sole manager. "
+    )
+    assert len(results) == 2
+    for item in results:
+        if item["raw"] == "Dylan":
+            assert item["start"] == 14
+        elif item["raw"] == "10,000 Dollars":
+            assert item["start"] == 91
+        else:
+            assert False
+
+    return rxch
+
+
+def test_same_result():
+    sample_input = open("tests/sample.input.txt", mode="rt").read()
+
+    rxch_separated = Rexearch(mode=SEARCH_MODE.SEPARATED)
+    rxch_separated.load_json_file("tests/sample.rules.json")
+
+    rxch_unified = Rexearch(mode=SEARCH_MODE.UNIFIED)
+    rxch_unified.load_json_file("tests/sample.rules.json")
+
+    results_separated = rxch_separated.search(sample_input)
+    results_unified = rxch_unified.search(sample_input)
+
+    assert sorted([str(item) for item in results_separated]) == sorted([str(item) for item in results_unified])

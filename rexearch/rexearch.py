@@ -20,7 +20,7 @@ class Rexearch:
                     rule["id"] = f"UNNAMED_RULE_{i}"
                 rule["regex_compiled"] = re.compile(rule["regex"])
 
-    def load_json(self, filepath, encoding="utf-8"):
+    def load_json_file(self, filepath, encoding="utf-8"):
         with open(filepath, mode="rt", encoding=encoding) as ifs:
             self.load(json.load(ifs))
 
@@ -38,7 +38,7 @@ class Rexearch:
 
                     # Parse representation if '{}' exists in it
                     if representation is not None and "{" in representation and "}" in representation:
-                        group = match.group
+                        group = match.group  # noqa: F841
                         representation = eval('f"' + representation + '"')
 
                     start, end = match.span(target_regex_group)

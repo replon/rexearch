@@ -14,7 +14,7 @@ quality:
 	flake8 $(check_dirs)
 
 test:
-	pytest
+	PYTHONPATH=. pytest
 
 test-cov:
-	pytest --cov-branch --cov $(test_dirs)
+	PYTHONPATH=. pytest --cov-branch --cov $(test_dirs)

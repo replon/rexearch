@@ -2,7 +2,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # This is just for test env
-import rexearch
+import rexearch  # noqa : E402
 
 rx = rexearch.Rexearch()
 rx.load_json("sample.rules.json")

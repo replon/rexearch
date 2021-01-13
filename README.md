@@ -59,6 +59,9 @@ rx = Rexearch(mode=SEARCH_MODE.SEPARATED)
 
 - `SEARCH_MODE.SEPARATED` : Default mode. Search one by one.
 - `SEARCH_MODE.UNIFIED` : This mode internally merge the regular expressions with '|' and run a single search. The result should be the same with the default.
+- `SEARCH_MODE.MULTI_THREAD` : This mode creates threads for each rule and run concurrently.
+
+*Note - In many cases, the default(separated) mode is faster than others because of handling time.*
 
 ## Updates
 
@@ -66,8 +69,5 @@ rx = Rexearch(mode=SEARCH_MODE.SEPARATED)
 
 - (0.1.0) First runnable. Only supports `SEARCH_MODE.SEPARATE` mode.
 - (0.1.1) Rename function `load_json` to `load_json_file`, Added basic tests
-- (0.1.2) Feat: support `SEARCH_MODE.UNIFIED`
-
-## Future works
-
-- Multi-thread search
+- (0.1.2) Support mode `SEARCH_MODE.UNIFIED`
+- (0.1.3) Support mode `SEARCH_MODE.MULTI_THREAD`

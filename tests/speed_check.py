@@ -18,7 +18,6 @@ for result in results_separated:
     print(result)
 print(f"Separated-mode Search time : {end-start} sec")
 
-
 rx_unified_mode = Rexearch(SEARCH_MODE.UNIFIED)
 rx_unified_mode.load_json_file("sample.rules.json")
 
@@ -29,3 +28,14 @@ end = time.time()
 assert sorted([str(item) for item in results_separated]) == sorted([str(item) for item in results_unified])
 
 print(f"Unified-mode Search time : {end-start} sec")
+
+rx_multi_thread_mode = Rexearch(SEARCH_MODE.MULTI_THREAD)
+rx_multi_thread_mode.load_json_file("sample.rules.json")
+
+start = time.time()
+results_multi_thread = rx_multi_thread_mode.search(sample_input)
+end = time.time()
+
+assert sorted([str(item) for item in results_separated]) == sorted([str(item) for item in results_multi_thread])
+
+print(f"Multi-thread-mode Search time : {end-start} sec")

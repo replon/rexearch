@@ -81,7 +81,12 @@ def test_same_result():
     rxch_unified = Rexearch(mode=SEARCH_MODE.UNIFIED)
     rxch_unified.load_json_file("tests/sample.rules.json")
 
+    rxch_multi_thread = Rexearch(mode=SEARCH_MODE.MULTI_THREAD)
+    rxch_multi_thread.load_json_file("tests/sample.rules.json")
+
     results_separated = rxch_separated.search(sample_input)
     results_unified = rxch_unified.search(sample_input)
+    results_multi_thread = rxch_multi_thread.search(sample_input)
 
     assert sorted([str(item) for item in results_separated]) == sorted([str(item) for item in results_unified])
+    assert sorted([str(item) for item in results_separated]) == sorted([str(item) for item in results_multi_thread])

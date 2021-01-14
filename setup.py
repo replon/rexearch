@@ -29,9 +29,9 @@ def get_require_packages():
 
 
 setup(
-    name="package",  # Change package name
+    name="rexearch",  # Change package name
     version=get_version(),
-    description="package description",
+    description="Regular Expression Search",
     python_requires=">=3.6.0",
     install_requires=get_require_packages(),
     url="https://github.com/replon/rexearch",

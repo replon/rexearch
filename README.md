@@ -50,7 +50,7 @@ for result in results:
 {'raw': '10,000 Dollars', 'start': 888, 'end': 902, 'repr': '$10000', 'rule_id': 'sample.rule.003', 'categories': ['PRICE']}
 ```
 
-### Search Mode
+### Set Search Mode
 ```python
 from rexearch import Rexearch, SEARCH_MODE
 
@@ -63,6 +63,7 @@ rx = Rexearch(mode=SEARCH_MODE.SEPARATED)
 
 *Note - In many cases, the default(separated) mode is faster than others because of handling time.*
 
+### 
 ## Updates
 
 ### Version 0.1

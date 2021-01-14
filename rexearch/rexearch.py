@@ -49,7 +49,7 @@ class Rexearch:
         if len(self.rules) > 0:
             print(f"{len(self.rules)} rules loaded")
         else:
-            raise ValueError(f"Cannot find rules")
+            raise ValueError("Cannot find rules")
 
     def load_json_file(self, filepath, encoding="utf-8"):
         with open(filepath, mode="rt", encoding=encoding) as ifs:
@@ -146,9 +146,14 @@ class Rexearch:
                 item["match"] = match
 
         if rule.get("validation") is not None:
-            if rule["validation"] not in self.custom_functions:
+            if rule["validation"].startswith("lambda "):
+                lambda_func = eval(rule["validation"])
+                valid = lambda_func(item)
+            elif rule["validation"] not in self.custom_functions:
                 raise ValueError(f"No such custom function: {rule['validation']}")
-            valid = self.custom_functions[rule["validation"]](item)
+            else:
+                valid = self.custom_functions[rule["validation"]](item)
+
             if valid is None or valid is False:
                 return None
 

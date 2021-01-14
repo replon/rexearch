@@ -1,4 +1,5 @@
 import json
+import time
 
 from rexearch import SEARCH_MODE, Rexearch
 
@@ -90,3 +91,55 @@ def test_same_result():
 
     assert sorted([str(item) for item in results_separated]) == sorted([str(item) for item in results_unified])
     assert sorted([str(item) for item in results_separated]) == sorted([str(item) for item in results_multi_thread])
+
+
+def test_valid_check():
+    json_str = """[
+    {"regex" : "[aA][gG][eE] ?: ?([1-9][0-9]*)", "target_regex_group":1, "categories":["AGE"], "validation":"lambda x: int(x['raw'])>=15"},
+    {"regex" : "(id)|(ID) ?: ?([_\\\\-0-9a-zA-Z]{2,})", "target_regex_group":3, "categories":["ID"], "validation":"check_id"}]"""
+
+    def check_id(item):
+        if item["raw"] in ["replon87", "dylan", "awesome_id", "supersonic", "Dongwook"]:
+            return True
+        else:
+            return False
+
+    rxch = Rexearch()
+    rxch.load(json.loads(json_str))
+    assert len(rxch.rules) == 2
+
+    rxch.custom_functions["check_id"] = check_id
+    input_text = """
+    Name: John
+    Name: dylan
+    Name: Dongwook
+    ID: supersonic (valid)
+    ID: replon87 (valid)
+    ID: invalid_id
+    Age: 55 (valid)
+    Age: 12
+    Age: 25 (valid)
+    """
+    result = rxch.search(input_text)
+    print(result)
+    assert len(result) == 4
+
+
+def test_custom_function():
+    json_str = """[
+    {"regex": "[cC]urrent [tT]ime", "repr":"{custom_function['now']()}", "categories":["DATETIME"]}
+    ]"""
+
+    def get_ctime_str():
+        return time.ctime()[4:]
+
+    rxch = Rexearch()
+    rxch.load(json.loads(json_str))
+    assert len(rxch.rules) == 1
+
+    rxch.custom_functions["now"] = get_ctime_str
+
+    input_text = "I'm checking the current time."
+    result = rxch.search(input_text)
+    print(result)
+    assert len(result) == 1

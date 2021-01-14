@@ -15,6 +15,8 @@ class Rexearch:
         self.unified_regex = None
         self.group_num_to_rule_num = None
 
+        self.custom_functions = dict()
+
     def load(self, rules):
         self.rules = rules
         # Compile rules in advance
@@ -66,17 +68,19 @@ class Rexearch:
                     rule_id = rule.get("id")
 
                     # Parse representation if '{}' exists in it
+                    representation_out = representation
                     if representation is not None and "{" in representation and "}" in representation:
                         group = match.group  # noqa: F841
+                        custom_function = self.custom_functions  # noqa: F841
                         representation = re.sub("(group\\([0-9]+)(\\))", repl=f"\\1+{offset}\\2", string=representation)
-                        representation = eval('f"' + representation + '"')
+                        representation_out = eval('f"' + representation + '"')
 
                     start, end = match.span(target_regex_group)
                     item = {"raw": raw, "start": start, "end": end}
 
                     # Additional metadata
-                    if representation is not None:
-                        item["repr"] = representation
+                    if representation_out is not None:
+                        item["repr"] = representation_out
                     if rule_id is not None:
                         item["rule_id"] = rule_id
                     if categories is not None:
@@ -115,16 +119,18 @@ class Rexearch:
             raw = match.group(target_regex_group)
 
             # Parse representation if '{}' exists in it
+            representation_out = representation
             if representation is not None and "{" in representation and "}" in representation:
                 group = match.group  # noqa: F841
-                representation = eval('f"' + representation + '"')
+                custom_function = self.custom_functions  # noqa: F841
+                representation_out = eval('f"' + representation + '"')
 
             start, end = match.span(target_regex_group)
             item = {"raw": raw, "start": start, "end": end}
 
             # Additional metadata
-            if representation is not None:
-                item["repr"] = representation
+            if representation_out is not None:
+                item["repr"] = representation_out
             if rule_id is not None:
                 item["rule_id"] = rule_id
             if categories is not None:

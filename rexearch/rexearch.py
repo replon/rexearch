@@ -22,7 +22,7 @@ class Rexearch:
         # Compile rules in advance
         if self.mode is SEARCH_MODE.SEPARATED or self.mode is SEARCH_MODE.MULTI_THREAD:
             for i, rule in enumerate(rules):
-                if 'regex' not in rule:
+                if "regex" not in rule:
                     print(f'Cannot find "regex" field. ignored : {str(rule)}')
                     continue
                 if "id" not in rule and self.auto_rule_id:
@@ -34,7 +34,7 @@ class Rexearch:
             self.group_num_to_rule_num = dict()
             unified_regex_str = ""
             for i, rule in enumerate(rules):
-                if 'regex' not in rule:
+                if "regex" not in rule:
                     print(f'Cannot find "regex" field. ignored : {str(rule)}')
                     continue
                 if "id" not in rule and self.auto_rule_id:
@@ -47,7 +47,7 @@ class Rexearch:
             self.unified_regex = re.compile(unified_regex_str)
 
         if len(self.rules) > 0:
-            print(f'{len(self.rules)} rules loaded')
+            print(f"{len(self.rules)} rules loaded")
         else:
             raise ValueError(f"Cannot find rules")
 
@@ -92,7 +92,9 @@ class Rexearch:
                     if group_raw is None or group_raw == "":
                         continue
 
-                    result.append(self.__make_result_item(self.rules[rule_num], match))
+                    item = self.__make_result_item(self.rules[rule_num], match)
+                    if item is not None:
+                        result.append(item)
 
             return result
 
@@ -102,7 +104,9 @@ class Rexearch:
     def __search_by_a_rule(self, rule, input_str, return_match_obj):
         result = []
         for match in rule["regex_compiled"].finditer(input_str):
-            result.append(self.__make_result_item(rule, match, return_match_obj))
+            item = self.__make_result_item(rule, match, return_match_obj)
+            if item is not None:
+                result.append(item)
         return result
 
     def __make_result_item(self, rule, match, return_match_obj=False):
@@ -140,5 +144,12 @@ class Rexearch:
                 print("WARN: return_match_obj=True is NOT supported in SEARCH_MODE.UNIFIED (ignored)")
             else:
                 item["match"] = match
+
+        if rule.get("validation") is not None:
+            if rule["validation"] not in self.custom_functions:
+                raise ValueError(f"No such custom function: {rule['validation']}")
+            valid = self.custom_functions[rule["validation"]](item)
+            if valid is None or valid is False:
+                return None
 
         return item

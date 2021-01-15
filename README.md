@@ -13,14 +13,14 @@ JSON Example
 ```json
 [
 {"regex": "(Bob )?Dylan", "repr": "Bob Dylan"},
-{"id": "001", "regex": "(N|n)ame ?: ?([a-zA-Z ]+)", "target_regex_group": 2, "categories": ["PERSON_NAME"]}
+{"id": "001", "regex": "(N|n)ame ?: ?([a-zA-Z ]+)", "target_regex_group": 2, "tags": ["PERSON_NAME"]}
 ]
 ```
 **Rexearch** reads a JSON rule list from your own file. a `rule` may contain following key-values
 
 - **regex** (str) - Whole Regular Expression that you want to search. **Mandatory**.
 - **target_regex_group** (int) - The target group number that you want to extract as `raw`. You may want to extract just some part of whole expression.
-- **categories** (list of str) - This will put some additional tags on the rule.
+- **tags** (list of str) - This will put some additional tags on the rule.
 - **id** (str) - Set `rule_id` if it needed
 - **repr** (str or f-string) - Representative word of this word. You can also write f-string using `{}` and `group(int)` in it. For example, "{group(2)} Month" will generate proper representation based on the `Match.group` object. 
 
@@ -42,12 +42,12 @@ for result in results:
 {'raw': 'Dylan', 'start': 646, 'end': 651, 'repr': 'Bob Dylan'}
 {'raw': 'Bob Dylan', 'start': 731, 'end': 740, 'repr': 'Bob Dylan'}
 {'raw': 'Dylan', 'start': 811, 'end': 816, 'repr': 'Bob Dylan'}
-{'raw': 'John Smith', 'start': 935, 'end': 945, 'rule_id': 'sample.rule.001', 'categories': ['PERSON_NAME']}
-{'raw': 'Dongwook Lee', 'start': 1012, 'end': 1024, 'rule_id': 'sample.rule.001', 'categories': ['PERSON_NAME']}
-{'raw': 'Sarah Connor', 'start': 1091, 'end': 1103, 'rule_id': 'sample.rule.001', 'categories': ['PERSON_NAME']}
-{'raw': 'Good', 'start': 999, 'end': 1003, 'repr': 'Positive', 'rule_id': 'sample.rule.002', 'categories': ['RATE', 'EMOTION']}
-{'raw': 'Great', 'start': 1077, 'end': 1082, 'repr': 'Positive', 'rule_id': 'sample.rule.002', 'categories': ['RATE', 'EMOTION']}
-{'raw': '10,000 Dollars', 'start': 888, 'end': 902, 'repr': '$10000', 'rule_id': 'sample.rule.003', 'categories': ['PRICE']}
+{'raw': 'John Smith', 'start': 935, 'end': 945, 'rule_id': 'sample.rule.001', 'tags': ['PERSON_NAME']}
+{'raw': 'Dongwook Lee', 'start': 1012, 'end': 1024, 'rule_id': 'sample.rule.001', 'tags': ['PERSON_NAME']}
+{'raw': 'Sarah Connor', 'start': 1091, 'end': 1103, 'rule_id': 'sample.rule.001', 'tags': ['PERSON_NAME']}
+{'raw': 'Good', 'start': 999, 'end': 1003, 'repr': 'Positive', 'rule_id': 'sample.rule.002', 'tags': ['RATE', 'EMOTION']}
+{'raw': 'Great', 'start': 1077, 'end': 1082, 'repr': 'Positive', 'rule_id': 'sample.rule.002', 'tags': ['RATE', 'EMOTION']}
+{'raw': '10,000 Dollars', 'start': 888, 'end': 902, 'repr': '$10000', 'rule_id': 'sample.rule.003', 'tags': ['PRICE']}
 ```
 
 ### Set Search Mode
@@ -85,7 +85,7 @@ json_str = """[
     {
         "regex": "[cC]urrent [tT]ime", 
         "repr":"{custom_function['now']()}",
-        "categories":["DATETIME"]
+        "tags":["DATETIME"]
     }
 ]"""
 
@@ -95,7 +95,7 @@ result = rxch.search(input_text)
 print(result)
 ```
 ```text
-[{'raw': 'current time', 'start': 17, 'end': 29, 'repr': 'Jan 14 17:35:44 2021', 'categories': ['TIME']}]
+[{'raw': 'current time', 'start': 17, 'end': 29, 'repr': 'Jan 14 17:35:44 2021', 'tags': ['TIME']}]
 ```
 
 ### Set Validations to Filter Your Results
@@ -120,8 +120,8 @@ rxch.custom_functions["check_id"] = check_id
 
 # set 'validation' as custom_function name or lambda function
 json_str = """[
-{"regex" : "(id)|(ID) ?: ?([_\\\\-0-9a-zA-Z]{2,})", "target_regex_group":3, "categories":["ID"], "validation":"check_id"},
-{"regex" : "[aA][gG][eE] ?: ?([1-9][0-9]*)", "target_regex_group":1, "categories":["AGE"], "validation":"lambda x: int(x['raw'])>=15"}]"""
+{"regex" : "(id)|(ID) ?: ?([_\\\\-0-9a-zA-Z]{2,})", "target_regex_group":3, "tags":["ID"], "validation":"check_id"},
+{"regex" : "[aA][gG][eE] ?: ?([1-9][0-9]*)", "target_regex_group":1, "tags":["AGE"], "validation":"lambda x: int(x['raw'])>=15"}]"""
 
 rxch.load(json.loads(json_str))
 
@@ -140,7 +140,10 @@ result = rxch.search(input_text)
 print(result)
 ```
 ```text
-[{'raw': '55', 'start': 131, 'end': 133, 'categories': ['AGE']}, {'raw': '25', 'start': 163, 'end': 165, 'categories': ['AGE']}, {'raw': 'supersonic', 'start': 59, 'end': 69, 'categories': ['ID']}, {'raw': 'replon87', 'start': 86, 'end': 94, 'categories': ['ID']}]
+[{'raw': '55', 'start': 131, 'end': 133, 'tags': ['AGE']}, 
+{'raw': '25', 'start': 163, 'end': 165, 'tags': ['AGE']}, 
+{'raw': 'supersonic', 'start': 59, 'end': 69, 'tags': ['ID']}, 
+{'raw': 'replon87', 'start': 86, 'end': 94, 'tags': ['ID']}]
 ```
 
 ## Updates

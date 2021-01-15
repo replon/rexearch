@@ -155,3 +155,7 @@ print(result)
 - (0.1.2) Support mode `SEARCH_MODE.UNIFIED`
 - (0.1.3) Support mode `SEARCH_MODE.MULTI_THREAD`
 - (0.1.4) Support `custom_functions` and `validation`
+- (0.1.5) 
+    - Support .csv read
+    - Added `rexearch.utils` - write rules into .json or .csv
+    - Changed a term : `categories` -> `tags`

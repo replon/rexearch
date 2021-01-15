@@ -1,4 +1,5 @@
 import concurrent.futures
+import csv
 import json
 import re
 from enum import Enum
@@ -27,7 +28,7 @@ class Rexearch:
                     continue
                 if "id" not in rule and self.auto_rule_id:
                     rule["id"] = f"UNNAMED_RULE_{i}"
-                rule["regex_compiled"] = re.compile(rule["regex"])
+                rule["__regex_compiled"] = re.compile(rule["regex"])
                 self.rules.append(rule)
         elif self.mode is SEARCH_MODE.UNIFIED:
             offset = 0
@@ -40,7 +41,7 @@ class Rexearch:
                 if "id" not in rule and self.auto_rule_id:
                     rule["id"] = f"UNNAMED_RULE_{i}"
                 unified_regex_str = "|".join([unified_regex_str, "(" + rule["regex"] + ")"])
-                rule["group_offset"] = offset + 1
+                rule["__group_offset"] = offset + 1
                 self.group_num_to_rule_num[offset + 1] = i
                 offset += re.compile(rule["regex"]).groups + 1
                 self.rules.append(rule)
@@ -60,6 +61,26 @@ class Rexearch:
                 self.load(obj)
             else:
                 raise ValueError(f"Cannot find rules in the file {filepath}")
+
+    def load_csv_file(self, filepath, encoding="utf-8"):
+        with open(filepath, mode="rt", encoding=encoding) as ifs:
+            reader = csv.DictReader(ifs)
+            rules = []
+            for row in reader:
+                rule = dict()
+                if "regex" not in row:
+                    continue
+                for k, v in row.items():
+                    if v == "":
+                        continue
+                    if k == "tags":
+                        v = "".join(v.split()).split(",")
+                    elif k == "target_regex_group":
+                        v = int(v)
+                    rule[k] = v
+                rules.append(rule)
+
+            self.load(rules)
 
     def search(self, input_str: str, return_match_obj=False):
         if self.mode is SEARCH_MODE.SEPARATED:
@@ -103,14 +124,14 @@ class Rexearch:
 
     def __search_by_a_rule(self, rule, input_str, return_match_obj):
         result = []
-        for match in rule["regex_compiled"].finditer(input_str):
+        for match in rule["__regex_compiled"].finditer(input_str):
             item = self.__make_result_item(rule, match, return_match_obj)
             if item is not None:
                 result.append(item)
         return result
 
     def __make_result_item(self, rule, match, return_match_obj=False):
-        offset = rule.get("group_offset") or 0
+        offset = rule.get("__group_offset") or 0
         target_regex_group = rule.get("target_regex_group") or 0
         target_regex_group += offset
 

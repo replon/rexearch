@@ -1,6 +1,6 @@
 {
 	"version": "0.1",
-	"rexearch_version": "0.1.3",
+	"rexearch_version": "0.1.5",
 	"description": "Sample rules",
 	"rules":
 		[
@@ -14,7 +14,7 @@
 				"id": "sample.rule.001",
 				"regex" : "(N|n)ame ?: ?([a-zA-Z ]+)",
 				"target_regex_group" : 2,
-				"categories": ["PERSON_NAME"]
+				"tags": ["PERSON_NAME"]
 			},
 
 			{
@@ -22,7 +22,7 @@
 				"regex" : "(R|r)ate ?: ?(((V|v)ery )?(G|g)((ood)|(reat)))",
 				"target_regex_group" : 2,
 				"repr": "Positive",
-				"categories": ["RATE", "EMOTION"]
+				"tags": ["RATE", "EMOTION"]
 			},
 
 			{
@@ -30,7 +30,7 @@
 				"regex" : "(\\d{1,3}(?:[.,]\\d{3})*) ?(D|d)ollars?",
 				"target_regex_group" : 0,
 				"repr": "${group(1).replace(',','')}",
-				"categories": ["PRICE"]
+				"tags": ["PRICE"]
 			}
 		]
 }

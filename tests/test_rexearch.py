@@ -1,14 +1,15 @@
 import json
+import os
 import time
 
-from rexearch import SEARCH_MODE, Rexearch
+from rexearch import SEARCH_MODE, Rexearch, utils
 
 
 def test_list_load():
     json_str = """[
     {"regex" : "(Bob )?Dylan", "repr": "Bob Dylan"},
     {"id": "MY_ID", "regex": "(N|n)ame ?: ?([a-zA-Z ]+)",
-    "target_regex_group": 2,"categories": ["PERSON_NAME"]}
+    "target_regex_group": 2,"tags": ["PERSON_NAME"]}
     ]"""
     rxch = Rexearch()
     assert rxch.rules is None
@@ -46,7 +47,7 @@ def test_extract_target_raw():
         and signed a management contract with Albert Grossman.
         """
     )
-    name_results = list([item for item in results if "categories" in item and "PERSON_NAME" in item["categories"]])
+    name_results = list([item for item in results if "tags" in item and "PERSON_NAME" in item["tags"]])
     assert len(name_results) == 2
 
     names = set([item["raw"] for item in name_results])
@@ -95,8 +96,8 @@ def test_same_result():
 
 def test_valid_check():
     json_str = """[
-    {"regex" : "[aA][gG][eE] ?: ?([1-9][0-9]*)", "target_regex_group":1, "categories":["AGE"], "validation":"lambda x: int(x['raw'])>=15"},
-    {"regex" : "(id)|(ID) ?: ?([_\\\\-0-9a-zA-Z]{2,})", "target_regex_group":3, "categories":["ID"], "validation":"check_id"}]"""
+    {"regex" : "[aA][gG][eE] ?: ?([1-9][0-9]*)", "target_regex_group":1, "tags":["AGE"], "validation":"lambda x: int(x['raw'])>=15"},
+    {"regex" : "(id)|(ID) ?: ?([_\\\\-0-9a-zA-Z]{2,})", "target_regex_group":3, "tags":["ID"], "validation":"check_id"}]"""
 
     def check_id(item):
         if item["raw"] in ["replon87", "dylan", "awesome_id", "supersonic", "Dongwook"]:
@@ -127,7 +128,7 @@ def test_valid_check():
 
 def test_custom_function():
     json_str = """[
-    {"regex": "[cC]urrent [tT]ime", "repr":"{custom_function['now']()}", "categories":["DATETIME"]}
+    {"regex": "[cC]urrent [tT]ime", "repr":"{custom_function['now']()}", "tags":["DATETIME"]}
     ]"""
 
     def get_ctime_str():
@@ -143,3 +144,33 @@ def test_custom_function():
     result = rxch.search(input_text)
     print(result)
     assert len(result) == 1
+
+
+def test_rule_read_write_stability():
+    sample_input = open("tests/sample.input.txt", mode="rt").read()
+
+    rx = Rexearch()
+    rx.load_json_file("tests/sample.rules.json")
+    result1 = str(rx.search(sample_input))
+
+    output_csv_path = "tests/sample.rules.regenerated.csv"
+    utils.write_rule_as_csv(rx.rules, output_csv_path)
+
+    rx = Rexearch()
+    rx.load_csv_file(output_csv_path)
+    result2 = str(rx.search(sample_input))
+
+    print(result1)
+    print(result2)
+    assert result1 == result2
+
+    output_json_path = "tests/sample.rules.regenerated.json"
+    utils.write_rule_as_json(rx.rules, output_json_path, {"description": "Dumped Rules"})
+
+    rx = Rexearch()
+    rx.load_json_file(output_json_path)
+    result3 = str(rx.search(sample_input))
+
+    print(result1)
+    print(result3)
+    assert result1 == result3

@@ -135,9 +135,9 @@ class Rexearch:
         if rule_id is not None:
             item["rule_id"] = rule_id
 
-        categories = rule.get("categories")
-        if categories is not None:
-            item["categories"] = categories
+        tags = rule.get("tags")
+        if tags is not None:
+            item["tags"] = tags
 
         if return_match_obj:
             if self.mode is SEARCH_MODE.UNIFIED:

@@ -154,7 +154,7 @@ class Rexearch:
                 group = match.group  # noqa: F841
                 custom_function = self.custom_functions  # noqa: F841
 
-                representation = re.sub("(group\\([0-9]+)(\\))", repl=f"\\1+offset\\2", string=representation)
+                representation = re.sub("(group\\([0-9]+)(\\))", repl="\\1+offset\\2", string=representation)
                 # if offset != 0:
                 #     representation = re.sub("(group\\([0-9]+)(\\))", repl=f"\\1+{offset}\\2", string=representation)
 
@@ -163,7 +163,7 @@ class Rexearch:
                     self.eval_function_hash[lambda_str] = eval(lambda_str)
 
                 representation = self.eval_function_hash[lambda_str](group, custom_function, offset)
-                #representation = eval('f"' + representation + '"')
+                # representation = eval('f"' + representation + '"')
 
             item["repr"] = representation
 

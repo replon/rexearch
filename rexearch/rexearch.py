@@ -8,6 +8,11 @@ SEARCH_MODE = Enum("SEARCH_MODE", "SEPARATED UNIFIED MULTI_THREAD")
 
 
 class Rexearch:
+    """
+    @author Dylan Lee
+    @since 0.1.0
+    """
+
     def __init__(self, mode=SEARCH_MODE.SEPARATED, auto_rule_id=False):
         self.mode = mode
         self.auto_rule_id = auto_rule_id
@@ -17,6 +22,8 @@ class Rexearch:
         self.group_num_to_rule_num = None
 
         self.custom_functions = dict()
+
+        self.eval_function_hash = dict()
 
     def load(self, rules):
         self.rules = []
@@ -146,9 +153,17 @@ class Rexearch:
             if "{" in representation and "}" in representation:
                 group = match.group  # noqa: F841
                 custom_function = self.custom_functions  # noqa: F841
-                if offset != 0:
-                    representation = re.sub("(group\\([0-9]+)(\\))", repl=f"\\1+{offset}\\2", string=representation)
-                representation = eval('f"' + representation + '"')
+
+                representation = re.sub("(group\\([0-9]+)(\\))", repl=f"\\1+offset\\2", string=representation)
+                # if offset != 0:
+                #     representation = re.sub("(group\\([0-9]+)(\\))", repl=f"\\1+{offset}\\2", string=representation)
+
+                lambda_str = 'lambda group, custom_function, offset: f"' + representation + '"'
+                if lambda_str not in self.eval_function_hash:
+                    self.eval_function_hash[lambda_str] = eval(lambda_str)
+
+                representation = self.eval_function_hash[lambda_str](group, custom_function, offset)
+                #representation = eval('f"' + representation + '"')
 
             item["repr"] = representation
 

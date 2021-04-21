@@ -159,3 +159,5 @@ print(result)
     - Support .csv read
     - Added `rexearch.utils` - write rules into .json or .csv
     - Changed a term : `categories` -> `tags`
+- (0.1.6)
+    - Speed up by using representation cache

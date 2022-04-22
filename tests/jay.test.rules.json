@@ -32,13 +32,34 @@
 				"repr": "${group(1).replace(',','')}",
 				"tags": ["PRICE"]
 			},
-
+			
             {
-                "id": "FinanceRule",
+				"id": "FinanceRule",
                 "regex": "\\b(\\d[\\d, 조억만]*)\\s?(원|달러|불|엔|위안|루피|유로|파운드)",
-                "target_regex_group" : 3,
-                "repr": "${custom_function['Find_tag'](group(1))}",
-                "tags": "${custom_function['Find_FE'](group(2))}"
-            }
+				"tags": "{custom_function['Find_FE'](group(2))}",
+                "repr": "{custom_function['Find_FE'](group(1))}"
+            },
+
+			{
+                "id": "DateRule1",
+                "regex": "\\b(\\d{1,4}[년])?\\s?\\d{1,2}[월]\\s?\\d{1,2}[일]",
+                "target_regex_group" : 0
+            },
+
+			{
+                "id": "DateRule2",
+                "regex": "\\b(개천절|크리스마스|설날|설|추석|어린이날)",
+                "target_regex_group" : 0,
+				"tags": "'날짜'"
+            },
+			
+			{
+				"id": "DateRule3",
+                "regex": "\\b(내일 모레|내일|어제|오늘|보름 후|한 달 전|한 달 후|일주일 뒤|일주일 전|모레|그저께|익일|익익일|2주 뒤)",
+                "target_regex_group" : 0,
+				"tags": "'날짜'"
+   
+			}
+
 		]
 }

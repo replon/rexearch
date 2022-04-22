@@ -1,0 +1,44 @@
+{
+	"version": "0.1",
+	"rexearch_version": "0.1.5",
+	"description": "Jay Test rules",
+	"rules":
+		[
+
+			{
+				"regex" : "(Bob )?Dylan",
+				"repr": "Bob Dylan"
+			},
+
+			{
+				"id": "sample.rule.001",
+				"regex" : "(N|n)ame ?: ?([a-zA-Z ]+)",
+				"target_regex_group" : 2,
+				"tags": ["PERSON_NAME"]
+			},
+
+			{
+				"id": "sample.rule.002",
+				"regex" : "(R|r)ate ?: ?(((V|v)ery )?(G|g)((ood)|(reat)))",
+				"target_regex_group" : 2,
+				"repr": "Positive",
+				"tags": ["RATE", "EMOTION"]
+			},
+
+			{
+				"id": "sample.rule.003",
+				"regex" : "(\\d{1,3}(?:[.,]\\d{3})*) ?(D|d)ollars?",
+				"target_regex_group" : 0,
+				"repr": "${group(1).replace(',','')}",
+				"tags": ["PRICE"]
+			},
+
+            {
+                "id": "FinanceRule",
+                "regex": "\\b(\\d[\\d, 조억만]*)\\s?(원|달러|불|엔|위안|루피|유로|파운드)",
+                "target_regex_group" : 3,
+                "repr": "${custom_function['Find_tag'](group(1))}",
+                "tags": "${custom_function['Find_FE'](group(2))}"
+            }
+		]
+}

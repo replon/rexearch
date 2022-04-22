@@ -5,8 +5,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 import rexearch  # noqa : E402
 
 rx = rexearch.Rexearch()
-rx.load_json_file("sample.rules.json")
-sample_input = open("sample.input.txt", mode="rt").read()
+rx.load_json_file("tests/sample.rules.json")
+sample_input = open("tests/sample.input.txt", mode="rt").read()
 results = rx.search(sample_input)
+
 for result in results:
     print(result)

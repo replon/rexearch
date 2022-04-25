@@ -35,10 +35,9 @@
 			
             {
 				"id": "FinanceRule",
-                "regex": "(?![ ,])([\\d일이삼사오육칠팔구십백천만억조, ]+)?(원|달러|불|엔|위안|루피|유로|파운드)",
-				"target_regex_group" : 1,
-				"repr": "{group(1)}",
-				"tags": "{group(2)}"
+                "regex": "(?![ ,])([\\d영공일이삼사오육칠팔구십백천만억조, ]+)?(원|달러|불|엔|위안|루피|유로|파운드)",
+				"repr": "{custom_function['Find_FE'](group(1))}",
+				"tags": "{custom_function['Find_tag'](group(2))}"
             },
 
 			{

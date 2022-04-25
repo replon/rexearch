@@ -1,4 +1,4 @@
-hangle_numbers = {'영':[0,0],'공':[0,0],'일':[1,0],'이':[2,0],'삼':[3,0],'사':[4,0],'오':[5,0],
+hangle_numbers = {'.':['.',0],'점':['.',0], '영':[0,0],'공':[0,0],'일':[1,0],'이':[2,0],'삼':[3,0],'사':[4,0],'오':[5,0],
 '육':[6,0],'칠':[7,0],'팔':[8,0],'구':[9,0],
 '0':[0,0],'1':[1,0],'2':[2,0],'3':[3,0],'4':[4,0],'5':[5,0],
 '6':[6,0],'7':[7,0],'8':[8,0],'9':[9,0],
@@ -7,7 +7,7 @@ hangle_numbers = {'영':[0,0],'공':[0,0],'일':[1,0],'이':[2,0],'삼':[3,0],'�
 
 # custom function
 def find_FE(price):
-    number_table = [hangle_numbers[token] for token in price if token.isalnum()]
+    number_table = [hangle_numbers[token] for token in price if token in hangle_numbers ]
     
     def is_unit(table_index):
         return number_table[table_index][1]
@@ -45,3 +45,7 @@ print(find_FE('구'))
 print(find_FE('삼공공만'))
 print(find_FE('구천팔백사십칠만육천삼백이십오'))
 print(find_FE('5백1만'))
+print(find_FE('1.2억원'))
+print(find_FE('십이.공공구달러'))
+print(find_FE('13점영3엔'))
+print(find_FE('십3점7억'))

@@ -35,9 +35,10 @@
 			
             {
 				"id": "FinanceRule",
-                "regex": "\\b(\\d[\\d, 조억만]*)\\s?(원|달러|불|엔|위안|루피|유로|파운드)",
-				"tags": "{custom_function['Find_FE'](group(2))}",
-                "repr": "{custom_function['Find_FE'](group(1))}"
+                "regex": "(?![ ,])([\\d일이삼사오육칠팔구십백천만억조, ]+)?(원|달러|불|엔|위안|루피|유로|파운드)",
+				"target_regex_group" : 1,
+				"repr": "{group(1)}",
+				"tags": "{group(2)}"
             },
 
 			{

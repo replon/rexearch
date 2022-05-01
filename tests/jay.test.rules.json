@@ -5,61 +5,25 @@
 	"rules":
 		[
 
-			{
-				"regex" : "(Bob )?Dylan",
-				"repr": "Bob Dylan"
-			},
-
-			{
-				"id": "sample.rule.001",
-				"regex" : "(N|n)ame ?: ?([a-zA-Z ]+)",
-				"target_regex_group" : 2,
-				"tags": ["PERSON_NAME"]
-			},
-
-			{
-				"id": "sample.rule.002",
-				"regex" : "(R|r)ate ?: ?(((V|v)ery )?(G|g)((ood)|(reat)))",
-				"target_regex_group" : 2,
-				"repr": "Positive",
-				"tags": ["RATE", "EMOTION"]
-			},
-
-			{
-				"id": "sample.rule.003",
-				"regex" : "(\\d{1,3}(?:[.,]\\d{3})*) ?(D|d)ollars?",
-				"target_regex_group" : 0,
-				"repr": "${group(1).replace(',','')}",
-				"tags": ["PRICE"]
-			},
-			
             {
-				"id": "FinanceRule",
-                "regex": "(?![ ,.])([\\d.점영공일이삼사오육칠팔구십백천만억조, ]+)?(원|달러|불|엔|위안|루피|유로|파운드)",
-				"repr": "{custom_function['Find_FE'](group(1))}",
-				"tags": "{custom_function['Find_tag'](group(2))}"
+				"id": "UnitNumberRule",
+                "regex": "((-\\d+|\\d+)\\.?[\\d, 십백천만억조]+)(원|달러|불|명|대|개|도|%|건|년|일|배)",
+				"target_regex_group" : 0,
+				"repr": "{custom_function['find_unit_number'](group(1))}",
+				"tags": "NUMBER"
             },
-
 			{
-                "id": "DateRule1",
-                "regex": "\\b(\\d{1,4}[년])?\\s?\\d{1,2}[월]\\s?\\d{1,2}[일]",
-                "target_regex_group" : 0
+				"id": "HangleNumberRule",
+                "regex": "([일이삼사오육칠팔구십백천만억조 ]+)(원|달러|불|엔|위안|루피|유로|파운드)",
+				"target_regex_group" : 0,
+				"repr": "{custom_function['find_unit_number'](group(1))}",
+				"tags": "NUMBER"
             },
-
 			{
-                "id": "DateRule2",
-                "regex": "\\b(개천절|크리스마스|설날|설|추석|어린이날)",
-                "target_regex_group" : 0,
-				"tags": "'날짜'"
-            },
-			
-			{
-				"id": "DateRule3",
-                "regex": "\\b(내일 모레|내일|어제|오늘|보름 후|한 달 전|한 달 후|일주일 뒤|일주일 전|모레|그저께|익일|익익일|2주 뒤)",
-                "target_regex_group" : 0,
-				"tags": "'날짜'"
-   
+				"id": "NumberRule",
+                "regex": "(?![ ,.])(-?[\\d ,.]+[½-⅞]?)",
+				"target_regex_group" : 0,
+				"tags": "NUMBER"
 			}
-
 		]
 }

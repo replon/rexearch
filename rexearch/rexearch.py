@@ -137,6 +137,19 @@ class Rexearch:
                 result.append(item)
         return result
 
+    def __find_custom_function(self, match, offset, element):
+        group = match.group  # noqa: F841
+        custom_function = self.custom_functions  # noqa: F841
+
+        element = re.sub("(group\\([0-9]+)(\\))", repl="\\1+offset\\2", string=element)
+    
+        lambda_str = 'lambda group, custom_function, offset: f"' + element + '"'
+        if lambda_str not in self.eval_function_hash:
+            self.eval_function_hash[lambda_str] = eval(lambda_str)
+
+        return self.eval_function_hash[lambda_str](group, custom_function, offset)
+
+
     def __make_result_item(self, rule, match, return_match_obj=False):
         offset = rule.get("__group_offset") or 0
         target_regex_group = rule.get("target_regex_group") or 0
@@ -151,20 +164,7 @@ class Rexearch:
         # Parse representation if '{}' exists in it
         if representation is not None:
             if "{" in representation and "}" in representation:
-                group = match.group  # noqa: F841
-                custom_function = self.custom_functions  # noqa: F841
-
-                representation = re.sub("(group\\([0-9]+)(\\))", repl="\\1+offset\\2", string=representation)
-                # if offset != 0:
-                #     representation = re.sub("(group\\([0-9]+)(\\))", repl=f"\\1+{offset}\\2", string=representation)
-
-                lambda_str = 'lambda group, custom_function, offset: f"' + representation + '"'
-                if lambda_str not in self.eval_function_hash:
-                    self.eval_function_hash[lambda_str] = eval(lambda_str)
-
-                representation = self.eval_function_hash[lambda_str](group, custom_function, offset)
-                # representation = eval('f"' + representation + '"')
-
+                representation = self.__find_custom_function(match, offset, representation)
             item["repr"] = representation
 
         rule_id = rule.get("id")
@@ -173,6 +173,8 @@ class Rexearch:
 
         tags = rule.get("tags")
         if tags is not None:
+            if "{" in tags and "}" in tags:
+                tags = self.__find_custom_function(match, offset, tags)
             item["tags"] = tags
 
         if return_match_obj:

@@ -7,17 +7,17 @@
 
             {
 				"id": "UnitNumberRule",
-                "regex": "((-\\d+|\\d+)\\.?[\\d, 십백천만억조]+)(원|달러|불|명|대|개|도|%|건|년|일|배)",
+                "regex": "((-\\d+|\\d+)\\.?[\\d, 십백천만억조]+)(명|회|건|배|%)",
 				"target_regex_group" : 0,
 				"repr": "{custom_function['find_unit_number'](group(1))}",
-				"tags": "NUMBER"
+				"tags": "{group(3)}"
             },
 			{
 				"id": "HangleNumberRule",
                 "regex": "([일이삼사오육칠팔구십백천만억조 ]+)(원|달러|불|엔|위안|루피|유로|파운드)",
 				"target_regex_group" : 0,
 				"repr": "{custom_function['find_unit_number'](group(1))}",
-				"tags": "NUMBER"
+				"tags": "{group(2)}"
             },
 			{
 				"id": "NumberRule",

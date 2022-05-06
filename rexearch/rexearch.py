@@ -157,6 +157,10 @@ class Rexearch:
 
         raw = match.group(target_regex_group)
         start, end = match.span(target_regex_group)
+
+        if raw is None:
+            raise ValueError('Match group is None.\nRecheck your regex.')
+
         item = {"raw": raw, "start": start, "end": end}
 
         representation = rule.get("repr")

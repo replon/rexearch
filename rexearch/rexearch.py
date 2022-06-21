@@ -142,13 +142,12 @@ class Rexearch:
         custom_function = self.custom_functions  # noqa: F841
 
         element = re.sub("(group\\([0-9]+)(\\))", repl="\\1+offset\\2", string=element)
-    
+
         lambda_str = 'lambda group, custom_function, offset: f"' + element + '"'
         if lambda_str not in self.eval_function_hash:
             self.eval_function_hash[lambda_str] = eval(lambda_str)
 
         return self.eval_function_hash[lambda_str](group, custom_function, offset)
-
 
     def __make_result_item(self, rule, match, return_match_obj=False):
         offset = rule.get("__group_offset") or 0
@@ -159,7 +158,7 @@ class Rexearch:
         start, end = match.span(target_regex_group)
 
         if raw is None:
-            raise ValueError(f'Match group is None. Recheck your regex.\n match: {match} \n rule: {rule}')
+            raise ValueError(f"Match group is None. Recheck your regex.\n match: {match} \n rule: {rule}")
 
         item = {"raw": raw, "start": start, "end": end}
 

@@ -97,7 +97,7 @@ def test_same_result():
 def test_valid_check():
     json_str = """[
     {"regex" : "[aA][gG][eE] ?: ?([1-9][0-9]*)", "target_regex_group":1, "tags":["AGE"], "validation":"lambda x: int(x['raw'])>=15"},
-    {"regex" : "(id)|(ID) ?: ?([_\\\\-0-9a-zA-Z]{2,})", "target_regex_group":3, "tags":["ID"], "validation":"check_id"}]"""
+    {"regex" : "(id|ID) ?: ?([_\\\\-0-9a-zA-Z]{2,})", "target_regex_group":2, "tags":["ID"], "validation":"check_id"}]"""
 
     def check_id(item):
         if item["raw"] in ["replon87", "dylan", "awesome_id", "supersonic", "Dongwook"]:
